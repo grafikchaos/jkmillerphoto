@@ -14,7 +14,6 @@ load 'deploy/assets'
 # --------------------------------------------
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
-require 'dump/capistrano'
 
 # --------------------------------------------
 # CALLBACKS: Define which order tasks should
