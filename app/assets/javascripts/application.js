@@ -15,4 +15,6 @@
 //= require modernizr
 //= require bootstrap
 //= require turbolinks
+//= require maximage/jquery.cycle.all.min
+//= require maximage/jquery.maximage.min
 //= require_tree .
