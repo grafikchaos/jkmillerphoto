@@ -9,21 +9,27 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'modernizr-rails'
 gem "respond-rails", "~> 1.0"
+gem 'compass'
+gem 'compass-rails'
 gem 'bootstrap-sass', github: 'thomas-mcdonald/bootstrap-sass', branch: '3'
+gem 'font-awesome-sass-rails'
 gem 'cancan'
 gem 'devise'
 gem 'figaro'
 gem 'haml-rails'
 gem 'mysql2'
+gem "meta_search"
+gem 'foreigner'
+gem 'immigrant'
+gem 'squeel'
 gem 'rolify'
 gem 'simple_form', '>= 3.0.0.rc'
 
+
 # image uploads/processing
 gem 'carrierwave'
-# gem 'rmagick'
 gem 'mini_magick'
-gem "fog", "~> 1.3.1"
-# gem 'carrierwave_direct'
+gem 'mime-types'
 
 
 group :development do
