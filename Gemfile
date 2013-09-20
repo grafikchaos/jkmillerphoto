@@ -17,18 +17,21 @@ gem 'devise'
 gem 'figaro'
 gem 'haml-rails'
 gem 'mysql2'
-gem "meta_search"
 gem 'foreigner'
 gem 'immigrant'
 gem 'squeel'
 gem 'rolify'
 gem 'simple_form', '>= 3.0.0.rc'
 
+gem 'redcarpet'
+gem 'pygments.rb' # syntax highlighting
+
 
 # image uploads/processing
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'mime-types'
+gem 'magick-metadata'
 
 
 group :development do

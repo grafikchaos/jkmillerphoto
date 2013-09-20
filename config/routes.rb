@@ -1,4 +1,6 @@
 JKMillerPhoto::Application.routes.draw do
+  resources :photos
+
   # EXAMPLES
   # resources :products
   # root :to => 'welcome#index'

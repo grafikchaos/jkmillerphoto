@@ -1,0 +1,27 @@
+- title "Listing Photos"
+
+- main_action create_link([:new, :photo], class: 'btn-info', link_text: 'New Photo')
+
+%table.table.table-striped
+  %tr
+    %th Order
+    %th Name
+    %th Image
+    %th Description
+    %th Short description
+    %th Published
+    %th Published at
+    %th Actions
+
+  - @photos.each do |photo|
+    %tr
+      %td= photo.order
+      %td= photo.name
+      %td= image_tag(photo.image_url(:thumb).to_s, class: 'img-thumbnail')
+      %td= photo.description
+      %td= photo.short_description
+      %td= photo.published
+      %td= photo.published_at
+      %td= default_crud_actions(photo, link_text: '')
+
+%br
