@@ -5,7 +5,15 @@
       %title= content_for?(:title) ? yield(:title) : "Jkmillerphoto"
       %meta{:content => content_for?(:description) ? yield(:description) : "JK Miller Photo", :name => "description"}
         = stylesheet_link_tag "application", :media => "all"
+
+        - # load controller specific CSS files if the asset exists
+        = stylesheet_link_tag controller.controller_name if JKMillerPhoto::Application.assets.find_asset("#{controller.controller_name}.css")
+
         = javascript_include_tag "application"
+        = yield(:head) # allows us to load any necessary js files/plugins before calling the controller-specific js
+
+        - # load controller specific JS files if the asset exists
+        = javascript_include_tag controller.controller_name if JKMillerPhoto::Application.assets.find_asset("#{controller.controller_name}.js")
 
         / respond.js
         = respond_include_tags
@@ -15,6 +23,15 @@
   %body{:class => "#{controller_name} #{action_name}"}
     #main{:role => "main"}
       .container
+        - if content_for?(:title)
+          .page-header
+            %h1
+              = yield(:title)
+
+              - if content_for?(:main_action)
+                .pull-right
+                  = yield(:main_action)
+
         .content
           .row
             .span12
