@@ -33,6 +33,9 @@ gem 'mini_magick'
 gem 'mime-types'
 gem 'magick-metadata'
 
+# deployment
+gem 'capistrano'
+
 
 group :development do
   gem 'better_errors'
