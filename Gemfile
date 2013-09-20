@@ -20,6 +20,7 @@ group :development do
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
   gem 'html2haml'
   gem 'quiet_assets'
+  gem 'foreman'
 end
 group :development, :test do
   gem 'factory_girl_rails'
