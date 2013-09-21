@@ -21,7 +21,9 @@
         = csrf_meta_tags
         = yield(:head)
   %body{ class: "#{controller_name} #{action_name}" }
-    #branding{ class: "#{controller_name} #{action_name}" }
+    - if content_for?(:branding_bubble)
+      = yield(:branding_bubble)
+
 
     - if user_signed_in?
       / Fixed navbar
@@ -62,7 +64,8 @@
               = render 'layouts/messages' if user_signed_in?
               = yield
           %footer#footer
-            = "#{mail_to 'john@johnkmillerphoto.com'} | (612) 807.6018".html_safe
+            - if content_for?(:footer_contact_info)
+              = yield(:footer_contact_info)
 
             :javascript
               $(document).ready(function() {

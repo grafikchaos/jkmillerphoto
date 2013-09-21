@@ -1,3 +1,7 @@
 #maximage
   - @photos.each do |photo|
     = image_tag photo.image_url.to_s, class: 'img-responsive', alt: ''
+
+- content_for :footer_contact_info do
+  = "#{mail_to 'john@johnkmillerphoto.com'} | (612) 807.6018".html_safe
+

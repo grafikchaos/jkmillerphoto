@@ -1,0 +1,6 @@
+- content_for :branding_bubble do
+  #branding{ class: "#{controller_name} #{action_name}" }
+    = link_to 'Enter', '/gallery', class: 'enter-gallery btn'
+
+- content_for :footer_contact_info do
+  = "#{mail_to 'john@johnkmillerphoto.com'} | (612) 807.6018".html_safe
