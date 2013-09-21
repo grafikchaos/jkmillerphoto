@@ -14,6 +14,7 @@ load 'deploy/assets'
 # --------------------------------------------
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
+require 'puma/capistrano'
 
 # --------------------------------------------
 # CALLBACKS: Define which order tasks should
@@ -39,7 +40,12 @@ set :default_stage, "staging"
 # --------------------------------------------
 server "192.241.254.31", :web, :app, :db, primary: true
 
+# show password requests on windows
+# (http://weblog.jamisbuck.org/2007/10/14/capistrano-2-1)
+default_run_options[:pty] = true
 default_run_options[:shell] = '/bin/bash'
+# set :shell, '/bin/bash'
+
 
 set :user, "deploy"
 set :port, 33322
@@ -58,8 +64,7 @@ set :repository, "git@github.com:grafikchaos/jkmillerphoto.git"
 set :git_enable_submodules, 1
 set :repository_cache, 'git_cache'
 set :deploy_via, :remote_cache
-set :use_sudo, false
-set :copy_exclude, [".git*", ".DS_Store", "*.sublime*", "LICENSE*", "RELEASE*", "nbproject", "*.md", "Guardfile", "Procfile", 'Vagrantfile', 'Capfile', 'config/deploy', 'config/unicorn*', 'config/nginx*', 'config/database.yml*', 'config/cucumber.yml', 'config/application.yml*', 'test', 'spec', 'features', '.rspec']
+set :copy_exclude, [".git*", ".DS_Store", "*.sublime*", "LICENSE*", "RELEASE*", "nbproject", "*.md", "Guardfile", 'Vagrantfile', 'Capfile', 'config/deploy', 'config/unicorn*', 'config/nginx*', 'config/database.yml*', 'config/cucumber.yml', 'config/application.yml*', 'test', 'spec', 'features', '.rspec']
 
 
 
@@ -85,28 +90,7 @@ set :rake, "bundle exec rake" # sets the rake command to use bundler
 # --------------------------------------------
 # Puma/Foreman configuration
 # --------------------------------------------
-set :app_name, "puma-#{application}"
-namespace :foreman do
-  desc "Export the Procfile to Ubuntu's upstart scripts"
-  task :export, :roles => :app do
-    run "cd #{current_path} && #{sudo} foreman export upstart /etc/init -a #{app_name} -u #{user} -l /var/#{app_name}/log"
-  end
 
-  desc "Start the application services"
-  task :start, :roles => :app do
-    run "#{sudo} service #{app_name} start"
-  end
-
-  desc "Stop the application services"
-  task :stop, :roles => :app do
-    run "#{sudo} service #{app_name} stop"
-  end
-
-  desc "Restart the application services"
-  task :restart, :roles => :app do
-    run "#{sudo} service #{app_name} start || #{sudo} service #{app_name} restart"
-  end
-end
 
 # --------------------------------------------
 # Override Tasks
@@ -131,15 +115,6 @@ namespace :deploy do
   task :symlink_config, roles: :app do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/application.yml #{release_path}/config/application.yml"
-  end
-
-  task :restart, :roles => :app do
-    foreman.export
-
-    # on OS X the equivalent pid-finding command is `ps | grep '/puma' | head -n 1 | awk {'print $1'}`
-    run "(kill -s SIGUSR1 $(ps -C ruby -F | grep '/puma' | awk {'print $2'})) || #{sudo} service #{app_name} restart"
-
-    # foreman.restart # uncomment this (and comment line above) if we need to read changes to the procfile
   end
 end
 
@@ -246,13 +221,13 @@ namespace :backup do
       archives = (backups - backups.last(count)).map { |backup|
         File.join(backups_path, backup) }.join(" ")
 
-      try_sudo "rm -rf #{archives}"
+      run "#{sudo} rm -rf #{archives}"
     end
   end
 
   desc "Setup backup directory for database and web files"
   task :setup_backup, :except => { :no_release => true } do
-    try_sudo "mkdir -p #{backups_path} && mkdir -p #{tmp_backups_path}"
+    run "mkdir -p #{backups_path} && mkdir -p #{tmp_backups_path}"
   end
 end
 
