@@ -3,23 +3,71 @@
   %head
     %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
       %title= content_for?(:title) ? yield(:title) : "Jkmillerphoto"
-      %meta{:content => content_for?(:description) ? yield(:description) : "Jkmillerphoto", :name => "description"}
+      %meta{:content => content_for?(:description) ? yield(:description) : "JK Miller Photo", :name => "description"}
         = stylesheet_link_tag "application", :media => "all"
+
+        - # load controller specific CSS files if the asset exists
+        = stylesheet_link_tag controller.controller_name if JKMillerPhoto::Application.assets.find_asset("#{controller.controller_name}.css")
+
         = javascript_include_tag "application"
+        = yield(:head) # allows us to load any necessary js files/plugins before calling the controller-specific js
+
+        - # load controller specific JS files if the asset exists
+        = javascript_include_tag controller.controller_name if JKMillerPhoto::Application.assets.find_asset("#{controller.controller_name}.js")
+
+        / respond.js
+        = respond_include_tags
+
         = csrf_meta_tags
         = yield(:head)
-  %body{:class => "#{controller_name} #{action_name}"}
-    .navbar.navbar-fixed-top
-      %nav.navbar-inner
+  %body{ class: "#{controller_name} #{action_name}" }
+    #branding{ class: "#{controller_name} #{action_name}" }
+
+    - if user_signed_in?
+      / Fixed navbar
+      .navbar.navbar-inverse.navbar-fixed-top
         .container
-          = render 'layouts/navigation'
+          .navbar-header
+            %button.navbar-toggle{ type: "button", data: { toggle: "collapse", target: ".navbar-collapse" } }
+              %span.icon-bar
+              %span.icon-bar
+              %span.icon-bar
+
+            = link_to 'JK Miller Photo', root_path, class: 'navbar-brand'
+
+          .navbar-collapse.collapse
+            %ul.nav.navbar-nav
+              %li= link_to 'Home', root_path
+              %li= link_to 'Photos', photos_path if can?(:manage, Photo)
+              %li= link_to 'Users', users_path if can?(:manage, User)
+
+            %ul.nav.navbar-nav.navbar-right
+              %li= link_to 'My Account', edit_user_path(current_user)
+              %li= link_to "<i class='icon-signout'></i> Logout".html_safe, destroy_user_session_path, method: Rails.env.test? ? :get : :delete
+
     #main{:role => "main"}
       .container
+        - if content_for?(:title)
+          .page-header
+            %h1
+              = yield(:title)
+
+              - if content_for?(:main_action)
+                .pull-right
+                  = yield(:main_action)
+
         .content
           .row
             .span12
-              = render 'layouts/messages'
+              = render 'layouts/messages' if user_signed_in?
               = yield
-          %footer
+          %footer#footer
+            = "#{mail_to 'john@johnkmillerphoto.com'} | (612) 807.6018".html_safe
+
+            :javascript
+              $(document).ready(function() {
+                jQuery('#maximage').maximage();
+              });
+
       / ! end of .container
     / ! end of #main

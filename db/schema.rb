@@ -11,7 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130920005706) do
+ActiveRecord::Schema.define(version: 20130920024535) do
+
+  create_table "photos", force: true do |t|
+    t.string   "name",                null: false
+    t.string   "image"
+    t.text     "description"
+    t.text     "short_description"
+    t.integer  "order"
+    t.boolean  "published"
+    t.datetime "published_at"
+    t.string   "content_type"
+    t.string   "file_size"
+    t.integer  "width"
+    t.integer  "height"
+    t.string   "filename_suffix"
+    t.string   "file_format"
+    t.boolean  "is_transparency"
+    t.string   "resolution"
+    t.string   "compression_percent"
+    t.string   "file_name"
+    t.integer  "unique_color_count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "roles", force: true do |t|
     t.string   "name"

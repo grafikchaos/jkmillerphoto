@@ -12,6 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require modernizr
 //= require bootstrap
 //= require turbolinks
-//= require_tree .
+//= require maximage/jquery.cycle.all.min
+//= require maximage/jquery.maximage.min
+//= require home

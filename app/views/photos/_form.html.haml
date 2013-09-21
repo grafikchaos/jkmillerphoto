@@ -1,0 +1,14 @@
+= simple_form_for @photo, html: { class: 'well form-horizontal' } do |f|
+  = f.error_notification
+
+  .form-inputs
+    = f.input :name
+    = f.input :image, as: :file
+    = f.input :published, as: :boolean, label: 'Publish this photo?'
+    = f.input :order
+
+    = f.input :description
+    = f.input :short_description
+
+  .form-actions
+    = f.button :submit

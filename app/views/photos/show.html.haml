@@ -1,0 +1,27 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @photo.name
+%p
+  %b Image:
+  = @photo.image
+%p
+  %b Description:
+  = @photo.description
+%p
+  %b Short description:
+  = @photo.short_description
+%p
+  %b Published:
+  = @photo.published
+%p
+  %b Published at:
+  = @photo.published_at
+%p
+  %b Order:
+  = @photo.order
+
+= link_to 'Edit', edit_photo_path(@photo)
+\|
+= link_to 'Back', photos_path
