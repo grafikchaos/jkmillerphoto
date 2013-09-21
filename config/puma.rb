@@ -1,7 +1,7 @@
 environment ENV['RAILS_ENV']
 
 pidfile 'tmp/pids/puma.pid'
-state_path 'tmp/sockets/puma.state'
+state_path 'tmp/puma.state'
 bind 'unix:///tmp/puma-jkmillerphoto.sock'
 stdout_redirect 'log/puma.log', 'log/puma_err.log'
 

@@ -72,7 +72,7 @@ set :copy_exclude, [".git*", ".DS_Store", "*.sublime*", "LICENSE*", "RELEASE*", 
 #
 #   Example - Capistrano defaults to:
 #     _cset :shared_children,   %w(public/system log tmp/pids)
-set :shared_children, %w(public/system log tmp/pids public/uploads)
+set :shared_children, %w(public/system log tmp/pids tmp/sockets public/uploads)
 
 # --------------------------------------------
 # Database
@@ -90,12 +90,30 @@ set :rake, "bundle exec rake" # sets the rake command to use bundler
 # --------------------------------------------
 # Puma/Foreman configuration
 # --------------------------------------------
+set(:puma_sock) { "unix://#{shared_path}/sockets/puma.sock" }
+set(:puma_control) { "unix://#{shared_path}/sockets/pumactl.sock" }
+set(:puma_state) { "#{shared_path}/sockets/puma.state" }
+set(:puma_log) { "#{shared_path}/log/puma-#{stage}.log" }
+
 namespace :puma do
-  %w(start stop restart).each do |command|
-    desc "#{command} the puma web server"
-    task command.to_sym, roles: :app do
-      run "cd #{current_path} && bundle exec pumactl -P #{current_path}/tmp/pids/puma.pid #{command}"
-    end
+  desc "Start the application"
+  task :start do
+    run "cd #{current_path} && RAILS_ENV=#{stage} && bundle exec puma -b '#{puma_sock}' -e #{stage} -t2:4 --control '#{puma_control}' -S #{puma_state} >> #{puma_log} 2>&1 &", :pty => false
+  end
+
+  desc "Stop the application"
+  task :stop do
+    run "cd #{current_path} && RAILS_ENV=#{stage} && bundle exec pumactl -S #{puma_state} stop"
+  end
+
+  desc "Restart the application"
+  task :restart, :roles => :app, :except => { :no_release => true } do
+    run "cd #{current_path} && RAILS_ENV=#{stage} && bundle exec pumactl -S #{puma_state} restart"
+  end
+
+  desc "Status of the application"
+  task :status, :roles => :app, :except => { :no_release => true } do
+    run "cd #{current_path} && RAILS_ENV=#{stage} && bundle exec pumactl -S #{puma_state} stats"
   end
 end
 
@@ -126,13 +144,11 @@ namespace :deploy do
   end
 
   %w(start stop restart).each do |command|
-    desc "#{command} the application/web server"
+    desc "#{command} the application"
     task command, roles: :app do
-      run "touch #{current_path}/tmp/restart.txt"
       puma.send(command.to_sym)
     end
   end
-
 end
 
 # --------------------------------------------
