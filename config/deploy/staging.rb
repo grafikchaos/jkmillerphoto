@@ -2,7 +2,7 @@
 set :branch, "develop"
 
 # Database Name
-set :dbname, "jkmillerphoto_staging"
+set :dbname, "jkmphoto_staging"
 
 # RAKE => respect my authoriTAI!
 set :rails_env, 'staging'
