@@ -35,6 +35,7 @@ gem 'magick-metadata'
 
 # deployment
 gem 'capistrano'
+gem 'foreman'
 
 
 group :development do
@@ -42,14 +43,14 @@ group :development do
   gem 'binding_of_caller', :platforms=>[:mri_19, :mri_20, :rbx]
   gem 'html2haml'
   gem 'quiet_assets'
-  gem 'foreman'
 end
+
 group :development, :test do
   gem 'factory_girl_rails'
   gem 'puma'
 end
 group :production do
-  gem 'unicorn'
+  gem 'puma'
 end
 group :test do
   gem 'capybara'
