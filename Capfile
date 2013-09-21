@@ -94,7 +94,7 @@ namespace :puma do
   %w(start stop restart).each do |command|
     desc "#{command} the puma web server"
     task command.to_sym, roles: :app do
-      run "bundle exec pumactl -P #{current_path}/tmp/pids/puma.pid #{command}"
+      run "cd #{current_path} && bundle exec pumactl -P #{current_path}/tmp/pids/puma.pid #{command}"
     end
   end
 end
