@@ -1,0 +1,16 @@
+- title "Listing Users"
+
+- main_action create_link([:new, :user], class: 'btn-info', link_text: 'New User')
+
+%table.table.table-striped
+  %tr
+    %th Name
+    %th Email
+    %th Actions
+
+  - @users.each do |user|
+    %tr
+      %td= user.name
+      %td= user.email
+      %td= default_crud_actions(user, link_text: '')
+

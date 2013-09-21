@@ -1,6 +1,4 @@
 JKMillerPhoto::Application.routes.draw do
-  resources :photos
-
   # EXAMPLES
   # resources :products
   # root :to => 'welcome#index'
@@ -14,4 +12,9 @@ JKMillerPhoto::Application.routes.draw do
   root :to => "home#index"
 
   devise_for :users
+
+  resources :photos, :users
+
+
+  get '/gallery' => 'home#begin'
 end

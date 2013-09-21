@@ -33,8 +33,12 @@ class Ability
 
     if user.has_role?(:admin)
         can :manage, :all
+        cannot :destroy, User, :id => user.id
     else
+        cannot :manage, [Photo, User]
         can :read, [Photo]
+        can :edit, User, :id => user.id
+        cannot :destroy, User, :id => user.id
     end
   end
 end

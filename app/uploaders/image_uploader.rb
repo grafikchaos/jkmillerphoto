@@ -53,23 +53,23 @@ class ImageUploader < CarrierWave::Uploader::Base
 
 
   version :large do
-    process :resize_to_fill => [870, 580]
+    process :resize_to_fill => [800, 600]
   end
 
   version :medium, from_version: :large do
-    process :resize_to_fill => [375, 360]
+    process :resize_to_fill => [600, 450]
   end
 
   version :medium_thumb, from_version: :large do
-    process :resize_to_fill => [160, 105]
+    process :resize_to_fill => [300, 225]
   end
 
   version :thumb, from_version: :medium do
-    process :resize_to_fill => [48, 48]
+    process :resize_to_fill => [120, 102]
   end
 
   version :mini_thumb, from_version: :thumb do
-    process :resize_to_fill => [24, 24]
+    process :resize_to_fill => [48, 48]
   end
 
   process :store_metadata

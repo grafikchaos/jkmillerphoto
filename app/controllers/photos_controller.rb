@@ -1,4 +1,6 @@
 class PhotosController < ApplicationController
+  before_filter :authenticate_user!
+
   before_action :set_photo, only: [:show, :edit, :update, :destroy]
 
   # GET /photos
@@ -28,8 +30,8 @@ class PhotosController < ApplicationController
 
     respond_to do |format|
       if @photo.save
-        format.html { redirect_to @photo, notice: 'Photo was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @photo }
+        format.html { redirect_to photos_path, notice: 'Photo was successfully created.' }
+        format.json { render action: 'index', status: :created, location: photos_path }
       else
         format.html { render action: 'new' }
         format.json { render json: @photo.errors, status: :unprocessable_entity }
@@ -42,7 +44,7 @@ class PhotosController < ApplicationController
   def update
     respond_to do |format|
       if @photo.update(photo_params)
-        format.html { redirect_to @photo, notice: 'Photo was successfully updated.' }
+        format.html { redirect_to photos_path, notice: 'Photo was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
