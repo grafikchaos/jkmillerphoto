@@ -14,7 +14,7 @@ load 'deploy/assets'
 # --------------------------------------------
 require 'capistrano/ext/multistage'
 require 'bundler/capistrano'
-require 'puma/capistrano'
+# require 'puma/capistrano'
 
 # --------------------------------------------
 # CALLBACKS: Define which order tasks should
@@ -90,6 +90,14 @@ set :rake, "bundle exec rake" # sets the rake command to use bundler
 # --------------------------------------------
 # Puma/Foreman configuration
 # --------------------------------------------
+namespace :puma do
+  %w(start stop restart).each do |command|
+    desc "#{command} the puma web server"
+    task command.to_sym, roles: :app do
+      run "bundle exec pumactl -P #{current_path}/tmp/pids/puma.pid #{command}"
+    end
+  end
+end
 
 
 # --------------------------------------------
@@ -116,6 +124,15 @@ namespace :deploy do
     run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
     run "ln -nfs #{shared_path}/config/application.yml #{release_path}/config/application.yml"
   end
+
+  %w(start stop restart).each do |command|
+    desc "#{command} the application/web server"
+    task command, roles: :app do
+      run "touch #{current_path}/tmp/restart.txt"
+      puma.send(command.to_sym)
+    end
+  end
+
 end
 
 # --------------------------------------------
