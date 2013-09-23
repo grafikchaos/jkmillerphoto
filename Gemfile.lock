@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/manfe/bxslider-rails.git
+  revision: 0b1f769a815097ba0498fa924672433871e13a9d
+  specs:
+    bxslider-rails (4.1.0)
+
+GIT
   remote: git://github.com/thomas-mcdonald/bootstrap-sass.git
   revision: 0e88056ac5d58fb0bbd23d3fe929eac01712d964
   branch: 3
@@ -42,7 +48,6 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.1.4)
-    bxslider-rails (4.1.0)
     cancan (1.6.10)
     capistrano (2.15.5)
       highline
@@ -236,7 +241,7 @@ DEPENDENCIES
   better_errors
   binding_of_caller
   bootstrap-sass!
-  bxslider-rails
+  bxslider-rails!
   cancan
   capistrano
   capybara
