@@ -254,7 +254,7 @@ namespace :backup do
       archives = (backups - backups.last(count)).map { |backup|
         File.join(backups_path, backup) }.join(" ")
 
-      run "#{sudo} rm -rf #{archives}"
+      try_sudo "rm -rf #{archives}"
     end
   end
 

@@ -60,7 +60,34 @@ JKMillerPhoto::Application.configure do
   # Precompile additional assets.
   # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
   # config.assets.precompile += %w( search.js )
-  config.assets.precompile += %w( modernizr.js respond.js respond-proxy.html respond.proxy.js home.js )
+  config.assets.precompile += %w( modernizr.js respond.js respond-proxy.html respond.proxy.js )
+
+  # == Precompile assets
+  #
+  # precompiles all CSS/JS assets in the app/assets b/c I'm lazy
+  # and I don't want to freaking update this every time we add/use
+  # sass or coffeescript files
+  #
+  # This strategy excludes the other default asset directories
+  # (lib/assets, vendor/assets) as well as any assets located
+  # in gems (which is okay b/c they can be called with an @import
+  # command or a manifest file)
+  config.assets.precompile << Proc.new { |path|
+    if path =~ /\.(css|js)\z/
+      full_path = Rails.application.assets.resolve(path).to_path
+      app_assets_path = Rails.root.join('app', 'assets').to_path
+      if full_path.starts_with? app_assets_path
+        puts "including asset: " + full_path
+        true
+      else
+        puts "excluding asset: " + full_path
+        false
+      end
+    else
+      false
+    end
+  }
+
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -73,12 +100,12 @@ JKMillerPhoto::Application.configure do
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
 
-    config.action_mailer.smtp_settings = {
-      :address   => "smtp.mandrillapp.com",
-      :port      => 25,
-      :user_name => ENV["MANDRILL_USERNAME"],
-      :password  => ENV["MANDRILL_API_KEY"]
-    }
+  config.action_mailer.smtp_settings = {
+    :address   => "smtp.mandrillapp.com",
+    :port      => 25,
+    :user_name => ENV["MANDRILL_USERNAME"],
+    :password  => ENV["MANDRILL_API_KEY"]
+  }
 
 
   # Disable automatic flushing of the log to improve performance.
