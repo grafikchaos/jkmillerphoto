@@ -2,3 +2,11 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+
+@enableSlider = (selector) ->
+  selector = '.bxslider' unless selector?
+
+  jQuery(selector).bxSlider
+    pager: false
+    auto: true
+    autoHover: true # pause slideshow on hover

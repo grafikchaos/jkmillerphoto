@@ -12,6 +12,7 @@ gem "respond-rails", "~> 1.0"
 gem "compass-rails", "~> 2.0.alpha.0"
 gem 'bootstrap-sass', github: 'thomas-mcdonald/bootstrap-sass', branch: '3'
 gem 'font-awesome-sass-rails'
+gem 'bxslider-rails'
 gem 'cancan'
 gem 'devise'
 gem 'figaro'

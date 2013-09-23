@@ -1,7 +1,12 @@
-#maximage
+%ul#gallery-carousel.bxslider
   - @photos.each do |photo|
-    = image_tag photo.image_url.to_s, class: 'img-responsive', alt: ''
+    %li.slide= image_tag photo.image_url.to_s, class: 'img-responsive'
 
 - content_for :footer_contact_info do
+  :javascript
+    $(document).ready(function() {
+      enableSlider('.bxslider');
+    });
+
   = "#{mail_to 'john@johnkmillerphoto.com'} | (612) 807.6018".html_safe
 
